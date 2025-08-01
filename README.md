@@ -184,7 +184,8 @@ dotenv
 ├── static/
 ├── models/
 ├── db_backup/operaiq.sql
-├── .env.docker
+├── utils/consultas.py
+├── config/config.yml
 ├── .env.example
 └── README.md
 ```

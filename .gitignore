@@ -39,9 +39,8 @@ flask_session/
 # ========================================
 # Archivos de entorno
 # ========================================
-*.env
+.env*
 !.env.example
-!.env.template  # Si usas otros modelos base
 
 # ========================================
 # Reportes / archivos de salida
