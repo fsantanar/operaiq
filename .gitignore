@@ -1,0 +1,68 @@
+# ========================================
+# Python / Flask
+# ========================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pydistutils.cfg
+*.egg-info/
+.eggs/
+*.log
+
+# Archivos temporales de ejecución
+*.bak
+*.swp
+*.tmp
+*.pid
+
+# Entornos virtuales
+venv/
+ENV/
+env/
+
+# ========================================
+# Flask Session (en disco)
+# ========================================
+flask_session/
+
+# ========================================
+# Docker / PostgreSQL
+# ========================================
+*.dump
+*.db
+*.sqlite3
+
+# Archivos generados por Docker
+*.pid
+
+# ========================================
+# Archivos de entorno
+# ========================================
+*.env
+!.env.example
+!.env.template  # Si usas otros modelos base
+
+# ========================================
+# Reportes / archivos de salida
+# ========================================
+*.pdf
+*.xlsx
+*.csv
+output/
+tmp/
+temp/
+
+# ========================================
+# Archivos de editor / sistema operativo
+# ========================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ========================================
+# Carpetas Complementarias
+# ========================================
+
+crear_pdfs/

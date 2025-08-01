@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Historial de Servicios{% endblock %}
+
+{% block content %}
+    {% if es_empresa %}
+    <h2 align="center">Bienvenido/a representante de {{ session['usuario'] }}</h2>
+    {% else %}
+    <h2 align="center">Bienvenido/a {{ session['usuario'] }}</h2>
+    {% endif %}
+
+    <h3>
+        A continuación se muestran los servicios correspondientes al cliente.<br>
+        Para revisar un servicio específico vaya al link "Ver Progreso".
+    </h3>
+    
+    <!-- Tabla de servicios del cliente -->
+    <table id="tabla-externos">
+        <thead>
+            <tr>
+                <th>ID Servicio</th>
+                <th>Nombre Servicio</th>
+                <th>Máquinas</th>
+                <th>Nº Trabajos</th>
+                <th>Estado</th>
+                <th>Fecha Solicitud</th>
+                <th>Inicio Trabajos</th>
+                <th>Fin Trabajos</th>
+                <th>Precio</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for servicio in servicios %}
+                <tr>
+                    <td>{{ servicio.id }}</td>
+                    <td>{{ servicio.nombre_servicio | replace("Servicio individual: ", "IND: ") }}</td>
+                    <td>{{ servicio.unidad_tipo_servicio }}</td>
+                    <td>{{ servicio.n_trabajos }}</td>
+                    <td>{{ servicio.estado }}</td>
+                    <td>{{ servicio.fecha_solicitud.strftime('%d-%m-%Y') }}</td>
+                    <td>{{ servicio.fecha_inicio_trabajos.strftime('%d-%m-%Y') if servicio.fecha_inicio_trabajos else "N/A" }}</td>
+                    <td>{{ servicio.fecha_fin_trabajos.strftime('%d-%m-%Y') if servicio.fecha_fin_trabajos else "N/A" }}</td>
+                    <td>{{ '$' + '{:,.0f}'.format(servicio.total_precio_ot).replace(',', '.') if servicio.total_precio_ot else "N/A" }}</td>
+                    <td><a href="{{ url_for('externo.historial_servicios', id_servicio=servicio.id) }}">Ver Progreso</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if servicio_detalle is not none %}
+        <h3>Detalle del Servicio Seleccionado</h3>
+        <table id="tabla-detalle-servicio">
+            <thead>
+                <tr>
+                    <th>Máquina</th>
+                    <th>Trabajo</th>
+                    <th>Trabajador</th>
+                    <th>Rol</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>HH Asignadas</th>
+                    <th>HH Trabajadas</th>
+                    <th>Avance</th>
+                    <th>Comentarios</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fila in servicio_detalle %}
+                <tr>
+                    <td style="text-align: center;">{{ fila.n_maquina }}</td>
+                    <td>{{ fila.nombre_trabajo }}</td>
+                    <td>{{ fila.nombre_trabajador }}</td>
+                    <td>{{ fila.nombre_rol }}</td>
+                    <td>{{ fila.fechahora_inicio_ventana.strftime('%d-%m-%Y %H:%M') }}</td>
+                    <td>{{ fila.fechahora_fin_ventana.strftime('%d-%m-%Y %H:%M') }}</td>
+                    <td style="text-align: center;">{{ '{:.2f}'.format(fila.horas_hombre_asignadas) }}</td>
+                    <td style="text-align: center;">{{ '{:.2f}'.format(fila.horas_trabajadas_total) }}</td>
+                    <td style="text-align: center;">{{ '{:.0f}%'.format(fila.porcentaje_de_avance) }}</td>
+                    <td>{{ fila.observaciones or 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+{% endblock %}

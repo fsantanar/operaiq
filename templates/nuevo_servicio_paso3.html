@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block title %}Paso 3 - Asignación de Trabajadores{% endblock %}
+
+{% block content %}
+<h1>🔧 Paso 3: Asignación de Trabajadores</h1>
+
+<!-- Mostrar los mensajes de flash (errores o advertencias) -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="mensajes-flash">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<p>Para cada trabajo de cada máquina, por favor asigna un trabajador, establece las fechas y las horas de asignación.</p>
+
+<!-- Mostrar los requerimientos laborales de referencia que están en la sesión -->
+{% if session['requerimientos_laborales_referencia'] %}
+    <h3>Requerimientos Laborales</h3>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Trabajo</th>
+                <th>Rol</th>
+                <th>Horas Hombre Requeridas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req_laboral in session['requerimientos_laborales_referencia'] %}
+                <tr>
+                    <td>{{ req_laboral['trabajo'] }}</td>
+                    <td>{{ req_laboral['rol'] }}</td>
+                    <td>{{ req_laboral['horas_hombre_requeridas'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No se encontraron requerimientos laborales de referencia para este tipo de servicio.</p>
+{% endif %}
+
+<h3>Asignar Trabajadores</h3>
+
+<!-- Formulario para las asignaciones laborales -->
+<form method="POST" class="form-asignaciones-laborales">
+    <div class="form-group">
+        <table id="tabla-asignaciones" border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Trabajo</th>
+                    <th>Máquina a Atender</th> 
+                    <th>Trabajador</th>
+                    <th>Fecha Inicio</th>
+                    <th>Hora Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Hora Fin</th>
+                    <th>Horas Asignadas</th>
+                    <th>Estacionamiento</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Fila inicial con valores por defecto -->
+                <tr>
+                    <td>
+                        <select name="trabajo[]" required>
+                            <option value="" disabled selected>Seleccione un Trabajo</option>
+                            {% for req_laboral in session['requerimientos_laborales_referencia'] %}
+                                <option value="{{ req_laboral['id'] }}">{{ req_laboral['trabajo'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="numero_maquina[]" required>
+                            <option value="" disabled selected>Seleccione una Máquina</option>
+                            {% for i in range(1, numero_maquinas + 1) %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="trabajador[]" required>
+                            <option value="" disabled selected>Seleccione un Trabajador</option>
+                            {% for trabajador in trabajadores %}
+                                <option value="{{ trabajador['id'] }}">{{ trabajador['nombre'] }} ({{ trabajador['rol'] }})</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input type="date" name="fecha_inicio[]" required value="{{ fecha_hoy }}"></td>
+                    <td><input type="time" name="hora_inicio[]" required value="09:00"> </td>
+                    <td><input type="date" name="fecha_fin[]" required value="{{ fecha_hoy }}"></td>
+                    <td><input type="time" name="hora_fin[]" required value="17:00"></td>
+                    <td><input type="number" name="horas_asignadas[]" required min="0" value="1"></td>
+                    <td>
+                        <select name="estacionamiento[]" required>
+                            <option value="" disabled selected>Seleccione un Estacionamiento</option>
+                            {% for estacionamiento in estacionamientos_posibles %}
+                                <option value="{{ estacionamiento }}">{{ estacionamiento }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><button type="button" class="eliminar-fila">Eliminar</button></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Botón para agregar más asignaciones -->
+    <div class="form-group">
+        <button type="button" id="agregar-asignacion">Agregar Asignación</button>
+    </div>
+
+    <!-- Botón de confirmación -->
+    <div class="form-group">
+        <button type="submit">Confirmar y Avanzar al Paso 4</button>
+    </div>
+</form>
+
+<!-- Mostrar el mensaje de error después del formulario -->
+<div id="error-message" style="display: none; color: red; margin-top: 10px;"></div>
+
+
+<!-- Pasar las variables necesarias al JS como json -->
+<script>
+    var sessionData = {{ session | tojson }};
+    var trabajadores = {{ trabajadores | tojson }};
+    var estacionamientos_posibles = {{ estacionamientos_posibles | tojson }};
+    var numero_maquinas = {{ numero_maquinas | tojson }};  // Pasamos la variable numero_maquinas
+    var asignaciones_existentes = {{ asignaciones_existentes | tojson }};
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Incluir el archivo JS para manejo de la tabla de asignaciones -->
+<script src="{{ url_for('static', filename='js/tabla_asignaciones.js') }}"></script>
+{% endblock %}
+

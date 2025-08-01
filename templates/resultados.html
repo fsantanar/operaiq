@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Resultados Operacionales{% endblock %}
+
+{% block content %}
+<h1 style="text-align:center;">📊 Resultados Operacionales</h1>
+
+<p class="bienvenida-texto" style="max-width:800px; margin: 1em auto; text-align: justify;">
+    En esta sección puedes visualizar la evolución de los servicios realizados por la empresa a lo largo del tiempo,
+    identificar tendencias operativas y evaluar el rendimiento general de las operaciones simuladas.
+</p>
+
+<h2 style="text-align:center;">📅 Servicios Solicitados por Mes</h2>
+<div style="max-width: 1100px; margin: 0 auto;">
+    {{ grafico_servicios_html|safe }}
+</div>
+
+<h2 style="text-align:center; margin-top: 2em;">🔧 Máquinas Atendidas por Mes</h2>
+<div style="max-width: 1100px; margin: 0 auto;">
+    {{ grafico_maquinas_html|safe }}
+</div>
+
+<h2 style="text-align:center; margin-top: 2em;">📄 Resumen por Tipo de Servicio</h2>
+
+<div style="max-width: 1200px; margin: 0 auto; overflow-x: auto;">
+    <table style="width: 100%; table-layout: auto;">
+        <thead style="background-color: #f5f5f5;">
+            <tr>
+                <th style="border: 1px solid #ccc; padding: 8px;">ID</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Nombre Servicio</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Servicios Realizados</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Máquinas Atendidas</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Días/Servicio</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Días/Máquina</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Precio/Servicio</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Precio/Máquina</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Ingresos Totales</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in resumen_servicios %}
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ fila.ids_tipo_servicio }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px; min-width: 300px; white-space: normal; word-wrap: break-word;">{{ fila.nombre }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ fila.servicios_realizados }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ fila.maquinas_atendidas }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ fila.dias_trabajo_por_servicio }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ fila.dias_trabajo_por_maquina }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">${{ "{:,.0f}".format(fila.precio_por_servicio) }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">${{ "{:,.0f}".format(fila.precio_por_maquina) }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">${{ "{:,.0f}".format(fila.ingresos_totales) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<h2 style="text-align:center; margin-top: 2em;">🧰 Actividad por Tipo de Trabajo</h2>
+
+<div style="max-width: 1000px; margin: 0 auto; overflow-x: auto;">
+    <table style="width: 100%; table-layout: auto;">
+        <thead style="background-color: #f5f5f5;">
+            <tr>
+                <th style="border: 1px solid #ccc; padding: 8px;">ID</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Nombre Trabajo</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Trabajos Realizados</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Horas Trabajadas Totales</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Horas Trabajadas Promedio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in resumen_trabajos %}
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ fila.id_tipo_trabajo }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px; min-width: 300px; white-space: normal; word-wrap: break-word;">{{ fila.nombre_trabajo }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ fila.trabajos_realizados }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ "{:,.1f}".format(fila.horas_trabajadas_totales) }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ "{:,.1f}".format(fila.horas_trabajadas_promedio) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Insumos{% endblock %}
+
+{% block content %}
+<h1>Gestión de Insumos</h1>
+
+<p>A continuación se muestra la información de los insumos de la empresa, incluyendo su disponibilidad y estado de consumo.</p>
+
+<table id="tabla-insumos" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre del Insumo</th>
+            <th>Reutilizable</th>
+            <th>Disponibles</th>
+            <th>Información</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for insumo in info_insumos_y_consumos %}
+        <tr>
+            <td>{{ insumo.id }}</td>
+            <td>{{ insumo.nombre }}</td>
+            <td>{{ 'Sí' if insumo.reutilizable else 'No' }}</td>
+            <td>{{ insumo.disponibles }}</td>
+            <td>{{ insumo.info }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+

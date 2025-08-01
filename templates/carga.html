@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>👷 Carga Laboral</h1>
+<h2 class="centrado">Selecciona un trabajador para ver su carga laboral.</h2>
+
+<!-- Mensajes flash -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<form method="POST">
+    <label for="id_trabajador">Trabajador:</label>
+    <select name="id_trabajador" id="id_trabajador" required>
+        <option value="">-- Selecciona --</option>
+        {% for t in trabajadores %}
+            <option value="{{ t.id }}">{{ t.nombre }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Consultar</button>
+</form>
+
+{% if datos_horas %}
+    <h2 class="centrado">Asignaciones de {{ nombre_trabajador }}</h2>
+    <h2>Resumen de HH en los últimos meses</h2>
+    <div class="resumen-horas">
+        <div class="tarjeta">
+            <h3>Últimos 3 meses</h3>
+            <p><strong>Asignadas:</strong> {{ datos_horas['3m'][0]|round(1) }}</p>
+            <p><strong>Trabajadas:</strong> {{ datos_horas['3m'][1]|round(1) }}</p>
+        </div>
+        <div class="tarjeta">
+            <h3>Últimos 6 meses</h3>
+            <p><strong>Asignadas:</strong> {{ datos_horas['6m'][0]|round(1) }}</p>
+            <p><strong>Trabajadas:</strong> {{ datos_horas['6m'][1]|round(1) }}</p>
+        </div>
+        <div class="tarjeta">
+            <h3>Últimos 12 meses</h3>
+            <p><strong>Asignadas:</strong> {{ datos_horas['12m'][0]|round(1) }}</p>
+            <p><strong>Trabajadas:</strong> {{ datos_horas['12m'][1]|round(1) }}</p>
+        </div>
+    </div>
+{% endif %}
+
+
+{% for a in asignaciones_pendientes %}
+    {% if loop.first %}
+        <h2>Asignaciones Pendientes</h2>
+        <table border="1" class="tabla-bordes">
+            <tr>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>HH Asignadas</th>
+            </tr>
+    {% endif %}
+            <tr>
+                <td>{{ a.fechahora_inicio_ventana }}</td>
+                <td>{{ a.fechahora_fin_ventana }}</td>
+                <td>{{ a.horas_hombre_asignadas }}</td>
+            </tr>
+    {% if loop.last %}
+        </table>
+    {% endif %}
+{% else %}
+    {# No se muestra nada si no hay asignaciones pendientes #}
+{% endfor %}
+
+
+{% endblock %}

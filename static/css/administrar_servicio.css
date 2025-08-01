@@ -1,0 +1,48 @@
+
+/* Estilo específico solo para el formulario de nuevo servicio */
+.form-gestionar-servicio {
+    width: 95%; /* Define el ancho del formulario solo para gestionar servicio */
+    margin: 0 auto; /* Centra el formulario */
+    padding: 2em;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#table-gestionar-servicio {
+    width: 100%; /* Hace que la tabla ocupe el 100% del contenedor */
+    max-width: 1350px; /* Limita el ancho máximo */
+    margin: 0 auto; /* Centra la tabla */
+    border-collapse: collapse; /* Elimina los espacios entre las celdas */
+    background-color: #f5f5f5; /* Fondo suave para la tabla */
+    font-size: 0.9em; /* Reducir tamaño de la fuente */
+}
+
+/* Aplica un padding horizontal (izquierda y derecha) a todas las celdas de la tabla */
+#table-gestionar-servicio td {
+    padding-left: 10px;  /* Espacio a la izquierda */
+    padding-right: 10px; /* Espacio a la derecha */
+    text-align: left;
+}
+
+#table-gestionar-servicio th {
+    padding-left: 10px;  /* Espacio a la izquierda */
+    padding-right: 10px; /* Espacio a la derecha */
+    text-align: center;
+}
+
+
+td.nombre-trabajo {
+    word-wrap: break-word;
+    max-width: 200px;
+    white-space: normal;
+}
+
+#confirmar_cambios {
+    background-color: #f65353; /* Fondo mas llamativo para botón que guarda los cambios*/
+}
+
+#confirmar_cambios:hover {
+    background-color: #f92525;
+}

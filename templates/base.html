@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nuevo_servicio.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/administrar_servicio.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/insumos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/externos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cotizaciones.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/finanzas.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carga.css') }}">
+    <meta charset="UTF-8">
+    <title>{% block title %}ERP SAD{% endblock %}</title>
+</head>
+<body id="{% block body_id %}{{ '' }}{% endblock %}">
+    {% if request.endpoint != 'login.login' %}
+    <nav class="navbar">
+        <div class="navbar-container">
+            
+            <div class="navbar-left">
+                <strong>ERP SAD</strong>
+            </div>
+
+            <div class="navbar-right">
+                {% if session.get('usuario') %}
+                    <span class="navbar-user">
+                        Usuario: {{ session.get('usuario') }} ({{ session.get('tipo')|capitalize }})
+                    </span>
+                {% endif %}
+
+                {% if request.blueprint not in ['dashboard', 'externo'] %}
+                    <a href="{{ url_for('dashboard.dashboard') }}" class="navbar-link">Volver al Dashboard</a>
+                {% endif %}
+                
+                <a href="{{ url_for('login.logout') }}" class="navbar-link">Cerrar sesión</a>
+            </div>
+
+        </div>
+    </nav>
+    {% endif %}
+
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

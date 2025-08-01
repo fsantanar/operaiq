@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cotización</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div class="contenedor">
+        <header>
+            <div class="logo">
+                <h2>SAD Inversiones</h2>
+                <p><a href="https://sadinversiones.cl/wp/" class="link-real">sadinversiones.cl</a></p>
+                <p><strong>Fecha:</strong> {{ fecha }}</p>
+                <p><strong>N° Cotización:</strong> 001-{{ fecha }}</p>
+
+            </div>
+            <div class="info-cotizacion">
+                <img src="static/images/logo_sad.png" alt="Logo Empresa" class="logo-empresa">
+            </div>
+        </header>
+
+        <section class="datos-cliente">
+            <h3>Datos del Cliente</h3>
+            <p><strong>Cliente:</strong> {{ cliente }}</p>
+            <p><strong>RUT:</strong> {{ rut }}</p>
+            <p><strong>Correo Electrónico:</strong> {{ correo }}</p>
+        </section>
+
+        <section class="tabla-productos">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto / Servicio</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.producto }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>{{ item.precio }}</td>
+                        <td>{{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section class="total-final">
+            <p><strong>Total Neto:</strong> {{ total_neto }}</p>
+            <p><strong>IVA (19%):</strong> {{ iva }}</p>
+            <p><strong>Total Final:</strong> <span class="resaltado">{{ total_final }}</span></p>
+        </section>
+
+        <footer>
+            <p>Gracias por confiar en nosotros. Para aceptar esta cotización o realizar consultas, contáctanos a alvaro@sadinversiones.cl</p>
+        </footer>
+    </div>
+</body>
+</html>

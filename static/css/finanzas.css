@@ -1,0 +1,248 @@
+.finanzas-filtros {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.finanzas-label {
+    font-size: 16px;
+}
+
+.finanzas-input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    min-width: 160px;
+}
+
+.finanzas-boton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4f46e5;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.finanzas-boton:hover {
+    background-color: #4338ca;
+}
+
+.finanzas-resumen {
+    display: flex;
+    flex-wrap: wrap;  /* Opcional por si en pantallas pequeñas quieres que se acomoden abajo */
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.finanzas-caja {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 1px 1px 4px #ccc;
+    padding: 15px 20px;
+    width: 180px;
+    min-width: 160px;
+    text-align: center;
+}
+
+.finanzas-caja h3 {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.finanzas-caja p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.finanzas-instrucciones {
+    margin-bottom: 15px;
+    font-size: 22px;
+    text-align: center;
+}
+
+.finanzas-subfiltros {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 15px 0;
+}
+
+.finanzas-checkbox-label {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.finanzas-checkbox-title {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.finanzas-checkbox-label input[type="checkbox"] {
+    transform: scale(1.3);
+    margin-right: 8px;
+}
+
+.finanzas-filtrar-boton {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.finanzas-boton {
+    padding: 10px 25px;
+    background-color: #4f46e5;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.finanzas-boton:hover {
+    background-color: #4338ca;
+}
+
+.tabla-scroll {
+    max-width: 1300px;  /* o el alto que prefieras */
+    max-height: 500px;  /* o el alto que prefieras */
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    margin-top: 100px;
+    margin-left: 50px;
+}
+
+.finanzas-subtitulo {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.finanzas-nuevo {
+    margin-top: 2em;
+    padding: 1em;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.finanzas-nuevo form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+}
+
+.finanzas-nuevo label {
+    font-weight: bold;
+}
+
+.finanzas-nuevo input,
+.finanzas-nuevo select {
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+/* Estilos generales de la tabla */
+#tabla-movimientos {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 30px;
+}
+
+/* Estilos para los encabezados */
+#tabla-movimientos thead th {
+    position: sticky;
+    cursor: pointer;
+    top: 0;
+    padding-right: 20px; /* Aumenta el espacio a la derecha de las columnas */
+    background-color: rgb(222, 236, 252); /* Color de fondo para los encabezados */
+    color: black; /* Asegúrate de que el texto sea visible */
+}
+
+/* Estilo para cambiar el cursor cuando se pasa por encima de los encabezados */
+#tabla-movimientos th:hover:not(:nth-child(7)) {
+    cursor: pointer;
+}
+
+/* Evitar cursor pointer en la columna 'Archivo' */
+#tabla-movimientos th:nth-child(7) {
+    cursor: default; /* Cambia el cursor a 'default' (la flecha normal) */
+}
+
+/* Estilo para mostrar el mensaje de "Ordenar" en hover, solo para las columnas 1 a 6 */
+#tabla-movimientos th:hover:not(:nth-child(7))::after {
+    content: "Ordenar";
+    font-size: 12px;
+    color: #5b5a5a;
+    position: absolute;
+    bottom: 10px;
+}
+
+/* Estilo de las flechas en el encabezado */
+#tabla-movimientos th span.flecha {
+    font-size: 16px;
+    margin-left: 5px; /* Alinea la flecha con el texto */
+    display: inline-block; /* Asegura que la flecha esté en línea */
+}
+
+/* Anchos de las columnas */
+#tabla-movimientos th:nth-child(1), /* Fecha */
+#tabla-movimientos th:nth-child(2), /* Categoría */
+#tabla-movimientos th:nth-child(3), /* Tipo */
+#tabla-movimientos th:nth-child(4), /* Monto */
+#tabla-movimientos th:nth-child(5) { /* Divisa */
+    width: 150px; /* Establece un ancho fijo para la columna */
+}
+
+#tabla-movimientos th:nth-child(1) { /* Fecha */
+    width: 180px; /* Establece un ancho para la columna "Fecha" */
+}
+
+
+#tabla-movimientos th:nth-child(2) { /* Categoría */
+    width: 220px; /* Establece un ancho para la columna "Categoría" */
+}
+
+#tabla-movimientos th:nth-child(4) { /* Monto */
+    width: 180px; /* Establece un ancho para la columna "Monto" */
+}
+
+#tabla-movimientos th:nth-child(5) { /* Divisa */
+    width: 180px; /* Establece un ancho para la columna "Divisa" */
+}
+
+
+#tabla-movimientos th:nth-child(6) { /* Descripción */
+    width: 250px; /* Establece un ancho para la columna "Descripción" */
+}
+
+#tabla-movimientos th:nth-child(7) { /* Archivo */
+    width: 100px; /* Ajusta el ancho de la columna "Archivo" */
+}
+
+/* Estilo para las filas */
+#tabla-movimientos td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Fijar la columna de encabezado (header) */
+#tabla-movimientos th {
+    position: sticky;
+    top: 0;
+    background-color: rgb(222, 236, 252); /* color de fondo */
+    color: black; /* texto visible */
+    z-index: 1; /* Para que los encabezados se mantengan por encima del contenido */
+}
+
+/* Agregar borde inferior a las celdas */
+#tabla-movimientos td {
+    border-bottom: 1px solid #ddd;
+}

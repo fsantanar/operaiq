@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Resumen General{% endblock %}
+{% block content %}
+
+<section class="bienvenida-box">
+  <h2 class="bienvenida-titulo">🚀 Bienvenido a OperaIQ. Tu Administrador Virtual de Operaciones</h2>
+  <p class="bienvenida-texto">
+    Esta plataforma representa de forma virtual el funcionamiento real de tu empresa.
+    A través de simulaciones y reportes interactivos, puedes visualizar, analizar y optimizar tus procesos
+    operativos, financieros y logísticos de manera integrada. Explora cada sección para descubrir
+    oportunidades de mejora, eficiencia y rentabilidad.
+  </p>
+</section>
+
+<h1>Resumen General de la Empresa</h1>
+
+
+<div class="secciones-kpis">
+  <div>
+    <h2>📊 Actividad</h2>
+    <section class="kpis actividad">
+      <div class="kpi">📅 Periodo de actividad: {{ resumen.info_periodo_actividad }}</div>
+      <div class="kpi">🛠 Servicios finalizados: {{ resumen.info_servicios_finalizados }}</div>
+      <div class="kpi">🕒 Horas trabajadas: {{ resumen.info_horas_trabajadas }}</div>
+    </section>
+  </div>
+
+  <div>
+    <h2>💵 Finanzas</h2>
+    <section class="kpis finanzas">
+      <div class="kpi">💰 Inversión total: {{ resumen.info_finanzas.inversion }}</div>
+      <div class="kpi">📈 Ingresos por servicios: {{ resumen.info_finanzas.ingresos }}</div>
+      <div class="kpi">📉 Egresos: {{ resumen.info_finanzas.egresos }}</div>
+      <div class="kpi">✅ Ganancia neta: {{ resumen.info_finanzas.ganancia }}</div>
+    </section>
+  </div>
+</div>
+
+<hr>
+<h2 style="text-align:center;">📂 Módulos Disponibles</h2>
+
+<div class="menu-secciones">
+
+  <a class="seccion" href="{{ url_for('nuevo_servicio.crear_servicio') }}">
+    <div class="icono">📑</div>
+    <div class="texto">Definir Nuevo Servicio</div>
+  </a>
+
+  <a class="seccion" href="{{ url_for('administrar_servicio.index') }}">
+    <div class="icono">📋👤✔️</div>
+    <div class="texto">Administrar Servicios</div>
+  </a>
+
+  <a class="seccion" href="{{ url_for('carga.index') }}">
+    <div class="icono">👷</div>
+    <div class="texto">Carga Laboral</div>
+  </a>
+
+  <a class="seccion" href="{{ url_for('insumos.index') }}">
+    <div class="icono">📦</div>
+    <div class="texto">Insumos y Consumos</div>
+  </a>
+
+  <a class="seccion" href="{{ url_for('cotizaciones.index') }}">
+    <div class="icono">💰📋</div>
+    <div class="texto">Cotizaciones</div>
+  </a>
+
+  <a class="seccion" href="{{ url_for('finanzas.finanzas_dashboard') }}">
+    <div class="icono">💼</div>
+    <div class="texto">Finanzas Detalladas</div>
+  </a>
+
+  <a class="seccion" href="{{ url_for('resultados.index') }}">
+    <div class="icono">📊</div>
+    <div class="texto">Resultados Operacionales</div>
+  </a>
+
+
+
+
+
+</div>
+
+
+{% endblock %}
+
+

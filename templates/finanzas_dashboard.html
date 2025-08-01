@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="finanzas-contenedor">
+    <h1 class="finanzas-titulo">Resumen Financiero</h1>
+
+    {% if get_flashed_messages() %}
+        <div class="mensajes-flash">
+            {% for message in get_flashed_messages(with_categories=true) %}
+                <div class="alert alert-{{ message[0] }}">{{ message[1] }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <p class="finanzas-instrucciones">
+        Filtre por <strong>fecha</strong> y por <strong>tipo de movimiento</strong> para personalizar la información:
+    </p>
+
+    <div class="finanzas-filtros">
+        <label class="finanzas-label">Desde:
+            <input type="date" id="fecha_inicio" class="finanzas-input" value="{{ min_fecha }}">
+        </label>
+        <label class="finanzas-label">Hasta:
+            <input type="date" id="fecha_fin" class="finanzas-input" value="{{ max_fecha }}">
+        </label>
+    </div>
+
+    <div class="finanzas-subfiltros">
+        <div>
+            <strong class="finanzas-checkbox-title">Ingresos:</strong><br>
+            {% for tipo in tipos_ingreso %}
+                <label class="finanzas-checkbox-label">
+                    <input type="checkbox" class="tipo-ingreso" value="{{ tipo }}" checked> {{ tipo }}
+                </label><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            <strong class="finanzas-checkbox-title">Inversiones:</strong><br>
+            {% for tipo in tipos_inversion %}
+                <label class="finanzas-checkbox-label">
+                    <input type="checkbox" class="tipo-inversion" value="{{ tipo }}" checked> {{ tipo }}
+                </label><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            <strong class="finanzas-checkbox-title">Egresos:</strong><br>
+            {% for tipo in tipos_egreso %}
+                <label class="finanzas-checkbox-label">
+                    <input type="checkbox" class="tipo-egreso" value="{{ tipo }}" checked> {{ tipo }}
+                </label><br>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="finanzas-filtrar-boton">
+        <button id="btn-filtrar" class="finanzas-boton">Aplicar Filtros</button>
+    </div>
+
+    <div class="finanzas-resumen">
+        <div class="finanzas-caja">
+            <h3>Ingresos Totales</h3>
+            <p id="ingresos-val">$0</p>
+        </div>
+        <div class="finanzas-caja">
+            <h3>Inversiones Totales</h3>
+            <p id="inversiones-val">$0</p>
+        </div>
+        <div class="finanzas-caja">
+            <h3>Egresos Totales</h3>
+            <p id="egresos-val">$0</p>
+        </div>
+        <div class="finanzas-caja">
+            <h3>Balance</h3>
+            <p id="balance-val">$0</p>
+        </div>
+    </div>
+
+    <div class="finanzas-grafico">
+        <h3 class="finanzas-subtitulo">Evolución Ingresos, Egresos e Inversiones</h3>
+        <canvas id="graficoFinanzas"></canvas>
+    </div>
+</div>
+
+
+<div class="tabla-scroll">
+    <h3 class="finanzas-subtitulo">Detalle de Movimientos Financieros</h3>
+    <table id="tabla-movimientos" class="tabla-bordes">
+        <thead>
+            <tr>
+                <th id="th-fecha">Fecha <span class="flecha"></span></th>
+                <th id="th-categoria">Categoría <span class="flecha"></span></th>
+                <th id="th-tipo">Tipo <span class="flecha"></span></th>
+                <th id="th-monto">Monto <span class="flecha"></span></th>
+                <th id="th-divisa">Divisa <span class="flecha"></span></th>
+                <th id="th-descripcion">Descripción <span class="flecha"></span></th>
+                <th>Archivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Se llenará con JS -->
+        </tbody>
+    </table>
+</div>
+
+
+
+
+<h3 class="finanzas-subtitulo">Registrar Nuevo Movimiento</h3>
+<form action="{{ url_for('finanzas.registrar_movimiento') }}" method="POST" enctype="multipart/form-data">
+    <label>Categoría:
+        <select name="categoria" required>
+            <option value="ingreso">Ingreso</option>
+            <option value="egreso">Egreso</option>
+        </select>
+    </label>
+    <label>Tipo:
+        <input type="text" name="tipo" required>
+    </label>
+    <label>Monto:
+        <input type="number" name="monto" min="0" required>
+    </label>
+    <label>Divisa:
+        <input type="text" name="divisa">
+    </label>
+    <label>Descripción:
+        <input type="text" name="descripcion">
+    </label>
+    <label>Fecha:
+        <input type="datetime-local" name="fechahora_movimiento" required>
+    </label>
+    <label>Archivo Boleta:
+        <input type="file" name="archivo_boleta">
+    </label>
+    <button type="submit">Registrar Movimiento</button>
+</form>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/finanzas_dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Cotizaciones del Servicio{% endblock %}
+
+{% if get_flashed_messages() %}
+    <div class="mensajes-flash">
+        {% for message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ message[0] }}">{{ message[1] }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+{% block content %}
+    <h2>Cotizaciones para el Servicio ID {{ servicio_id }}</h2>
+
+    {% for cotizacion in cotizaciones %}
+        {% if loop.first %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Cotización</th>
+                    <th>Fecha Cotización</th>
+                    <th>Total Estimado</th>
+                    <th>Ver PDF</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% endif %}
+                <tr>
+                    <td>{{ cotizacion.id }}</td>
+                    <td>{{ cotizacion.fecha_cotizacion }}</td>
+                    <td>${{ cotizacion.total_estimado }}</td>
+                    <td>
+                        <a href="{{ url_for('static', filename='cotizaciones/' + cotizacion.nombre_archivo) }}" target="_blank">
+                            Ver Cotizacion
+                        </a>
+                    </td>
+                </tr>
+        {% if loop.last %}
+            </tbody>
+        </table>
+        {% endif %}
+{% else %}
+    <p>No hay cotizaciones para este servicio.</p>
+{% endfor %}
+
+    <a href="{{ url_for('cotizaciones.index') }}">Volver a la selección de servicios</a>
+{% endblock %}
+

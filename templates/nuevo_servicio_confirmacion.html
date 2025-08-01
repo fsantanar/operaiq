@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Confirmar Servicio{% endblock %}
+{% block body_id %}pagina-confirmacion{% endblock %} <!-- ID única para esta página -->
+{% block content %}
+<h1>Confirmar Nuevo Servicio</h1>
+
+<p><strong>ID del Servicio:</strong> {{ session.get('id_servicio','No encontrada') }}</p>
+<p><strong>Cliente:</strong> {{ session.get('nombre_cliente','No encontrado') }}</p>
+<p><strong>Proyecto:</strong> {{ session.get('nombre_proyecto','No encontrado') }}</p>
+<p><strong>Nombre Tipo de Servicio:</strong> {{ session.get('nombre_tipo_servicio','No encontrado') }}</p>
+<p><strong>Tipos de Trabajo Involucrados:</strong> {{ lista_trabajos }}</p>
+<p><strong>Número de Máquinas a Atender:</strong> {{ session['unidad_tipo_servicio'] }}</p>
+<p><strong>Fecha de Solicitud:</strong> {{ session['fecha_solicitud'] }}</p>
+<p><strong>Fecha Esperada:</strong> {{ session['fecha_esperada'] }}</p>
+<p><strong>Demora en el Pago (días):</strong> {{ session['demora_pago_dias'] }}</p>
+
+<h3>Requerimientos Materiales Seleccionados</h3>
+{% if session.get('requerimientos_materiales_seleccionados') %}
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Trabajo</th>
+            <th>Insumo</th>
+            <th>Cantidad Requerida</th>
+            <th>Porcentaje de Uso</th>
+            <th>Reutilizable</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for material in session['requerimientos_materiales_seleccionados'] %}
+        <tr>
+            <td>{{ material['nombre_trabajo'] }}</td>
+            <td>{{ material['nombre_insumo'] }}</td>
+            <td>{{ material['cantidad_requerida'] }}</td>
+            <td>{{ material['porcentaje_uso'] }}</td>
+            <td>{{ 'Sí' if material['reutilizable'] else 'No' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No especificados</p>
+{% endif %}
+
+<h3>Asignaciones Laborales</h3>
+{% if session.get('asignaciones_laborales') %}
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Máquina</th>
+            <th>Trabajo</th>
+            <th>Trabajador</th>
+            <th>Rol</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Horas Asignadas</th>
+            <th>Estacionamiento</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for asignacion in session['asignaciones_laborales'] %}
+        <tr>
+            <td>{{ asignacion['numero_maquina'] }}</td>
+            <td>{{ asignacion['nombre_trabajo'] }}</td>
+            <td>{{ asignacion['nombre_trabajador'] }}</td>
+            <td>{{ asignacion['rol'] }}</td>
+            <td>{{ asignacion['fecha_hora_inicio'] }}</td>
+            <td>{{ asignacion['fecha_hora_fin'] }}</td>
+            <td>{{ asignacion['horas_asignadas'] }}</td>
+            <td>{{ asignacion['estacionamiento'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No especificadas</p>
+{% endif %}
+
+<form method="POST" action="{{ url_for('nuevo_servicio.confirmar_servicio') }}" class="form-confirmar">
+    <button type="submit" class="btn-confirmar">Confirmar Servicio</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Cotizaciones{% endblock %}
+
+{% block content %}
+    <h2>Ver Cotizaciones</h2>
+
+    {% if mensaje_advertencia %}
+        <p style="color: red;">{{ mensaje_advertencia }}</p>
+    {% endif %}
+
+    <!-- Formulario para seleccionar cliente y servicio -->
+    <form method="get" action="{{ url_for('cotizaciones.ver_cotizaciones') }}">
+        <label for="cliente_id">Seleccionar Cliente:</label>
+        <select name="cliente_id" id="cliente_id" required>
+            <option value="">Seleccione un cliente</option>
+            {% for cliente in clientes %}
+                <option value="{{ cliente['id'] }}" {% if request.args.get('cliente_id') == cliente['id'] %} selected {% endif %}>{{ cliente['nombre'] }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="servicio_id">Seleccionar Servicio:</label>
+        <select name="servicio_id" id="servicio_id">
+            <option value="">Seleccione un servicio</option>
+            {% for servicio in servicios %}
+                <option value="{{ servicio['id'] }}" {% if request.args.get('servicio_id') == servicio['id'] %} selected {% endif %}>{{ servicio['nombre'] }} del {{ servicio.fecha_solicitud.strftime('%d/%m/%Y') }} (ID={{servicio['id']}})</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <!-- Tabla de cotizaciones -->
+    <table>
+        <thead>
+            <tr>
+                <th>Servicio</th>
+                <th>Fecha Cotización</th>
+                <th>Total Estimado</th>
+                <th>Ver PDF</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cotizacion in cotizaciones %}
+                <tr>
+                    <td>{{ cotizacion['id_servicio'] }}</td>
+                    <td>{{ cotizacion['fecha_cotizacion'] }}</td>
+                    <td>${{ cotizacion['total_estimado'] }}</td>
+                    <td><a href="{{ url_for('static', filename='cotizaciones/' + cotizacion.nombre_archivo) }}" target="_blank">Ver PDF</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+/* Estilos para la tabla con ID 'tabla-externos' */
+#tabla-externos {
+    width: 100%;  /* Asegura que la tabla ocupe todo el ancho disponible */
+    margin: 30px auto;  /* Centra la tabla y agrega un margen superior */
+    border-collapse: collapse;  /* Elimina los espacios entre las celdas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Sombra sutil para dar profundidad */
+    border-radius: 8px;  /* Bordes redondeados */
+}
+
+#tabla-externos th {
+    background-color: #007bff;  /* Fondo azul suave */
+    color: white;  /* Texto blanco */
+    padding: 12px 15px;  /* Espaciado en los encabezados */
+    text-align: center;  /* Alineación del texto */
+    font-size: 20px;  /* Aumento del tamaño de la fuente */
+    border-top-left-radius: 8px;  /* Bordes redondeados solo en la esquina superior izquierda */
+    border-top-right-radius: 8px;  /* Bordes redondeados solo en la esquina superior derecha */
+}
+
+#tabla-externos th:first-child {
+    padding-left: 20px;  /* Añadir padding adicional al primer encabezado */
+}
+
+#tabla-externos td {
+    background-color: #f9f9f9;  /* Fondo gris muy claro */
+    padding: 6px 15px;  /* Espaciado dentro de las celdas */
+    text-align: left;  /* Alineación del texto */
+    border: 1px solid #ddd;  /* Borde gris claro */
+    font-size: 18px;  /* Tamaño de la fuente más pequeño */
+}
+
+#tabla-externos td:hover {
+    background-color: #f1f1f1;  /* Color de fondo cuando el cursor pasa por encima */
+    transition: background-color 0.3s ease;  /* Efecto suave en el cambio de color */
+}
+
+#tabla-externos tr:nth-child(even) td {
+    background-color: #f3f3f3;  /* Color de fondo diferente para filas pares */
+}
+
+#tabla-externos tr:nth-child(odd) td {
+    background-color: #ffffff;  /* Color de fondo diferente para filas impares */
+}
+
+#tabla-externos tr:hover td {
+    background-color: #e2e2e2;  /* Resalta la fila cuando se pasa el mouse por encima */
+}
+
+/* Estilos para los bordes */
+#tabla-externos th, #tabla-externos td {
+    border: 1px solid #e0e0e0;  /* Bordes más suaves */
+    border-radius: 4px;  /* Bordes redondeados en celdas */
+}
+
+/* Estilos para el pie de la tabla */
+#tabla-externos tfoot {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}

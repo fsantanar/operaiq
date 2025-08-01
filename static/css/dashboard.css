@@ -1,0 +1,104 @@
+.bienvenida-box {
+    background-color: #ffffff;
+    border: 1px solid #dcdde1;
+    padding: 2em;
+    margin: 0 auto 2em auto;
+    max-width: 1000px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    text-align: center;
+}
+
+.bienvenida-titulo {
+    font-size: 1.8em;
+    color: #2a2a2a;
+    margin-bottom: 0.6em;
+    font-weight: 600;
+}
+
+.bienvenida-texto {
+    font-size: 1.1em;
+    color: #444;
+    line-height: 1.7em;
+    margin: 0 auto;
+    max-width: 1000px;
+    text-align: justify;
+}
+
+.kpis {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+    margin: 1em 0;
+}
+
+.kpi {
+    background: #eef;
+    padding: 0.7em 1em;
+    border-radius: 5px;
+    display: inline-block;
+    width: 450px;
+    text-align: left;
+    font-size: 1em;
+}
+
+.kpis.actividad .kpi {
+    background: #e8f0fe;
+}
+
+.kpis.finanzas .kpi {
+    background: #eaf8ea;
+}
+
+.menu-secciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    margin-top: 2em;
+    justify-content: center;
+}
+
+.secciones-kpis {
+    display: flex;
+    gap: 3em;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.seccion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    background: #f3f3ff;
+    padding: 1em;
+    border-radius: 10px;
+    width: 140px;
+    transition: transform 0.2s ease;
+    box-shadow: 1px 1px 4px #ccc;
+    cursor: pointer;  /* Esto lo hace clickeable */
+}
+
+.seccion:hover {
+    transform: scale(1.05);
+    background: #e6e6ff;
+}
+
+.seccion_pendiente {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    background: #e0e0e0;  /* Gris claro para indicar inactividad */
+    padding: 1em;
+    border-radius: 10px;
+    width: 140px;
+    box-shadow: 1px 1px 4px #ccc;
+    opacity: 0.6;  /* Le da un toque desactivado */
+}
+
+/* Elimina cualquier efecto hover */
+.seccion_pendiente:hover {
+    transform: none;
+    background: #e0e0e0;
+}

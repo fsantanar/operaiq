@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Nuevo Servicio{% endblock %}
+
+{% block content %}
+<h1>🆕 Crear Nuevo Servicio</h1>
+
+{% if get_flashed_messages() %}
+    <div class="mensajes-flash">
+        {% for message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ message[0] }}">{{ message[1] }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+<!-- Formulario para crear el nuevo servicio -->
+<form method="POST" class="formulario-servicio">
+    <div class="form-group">
+        <label for="id_cliente">Cliente:</label>
+        <select name="id_cliente" id="id_cliente" required>
+            <option value="" disabled selected>Seleccione un Cliente</option>
+            {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="id_proyecto">Proyecto:</label>
+        <select name="id_proyecto" id="id_proyecto" required>
+            <option value="" disabled selected>Seleccione un Proyecto del Cliente</option>
+            {% for proyecto in proyectos %}
+                <option value="{{ proyecto.id }}" data-cliente="{{ proyecto.id_cliente }}">
+                    {{ proyecto.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="id_tipo_servicio">Tipo de Servicio:</label>
+        <select name="id_tipo_servicio" id="id_tipo_servicio" required>
+            <option value="" disabled selected>Seleccione un Tipo de Servicio</option>
+            {% for tipo in tipos_servicio %}
+                <option value="{{ tipo.id }}|{{ tipo.nombre }}">{{ tipo.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="unidad_tipo_servicio">Número de Máquinas a Atender:</label>
+        <input type="number" name="unidad_tipo_servicio" required min="1" value="1">
+    </div>
+
+    <div class="form-group">
+        <label for="fecha_solicitud">Fecha de Solicitud:</label>
+        <input type="date" name="fecha_solicitud" required value="{{ fecha_hoy }}">
+    </div>
+
+    <div class="form-group">
+        <label for="fecha_esperada">Fecha Esperada:</label>
+        <input type="date" name="fecha_esperada" required value="{{ fecha_hoy }}">
+    </div>
+
+    <div class="form-group">
+        <label for="demora_pago_dias">Demora estimada en el pago (días):</label>
+        <input type="number" name="demora_pago_dias" required min="0" value="0">
+    </div>
+
+    <div class="form-group">
+        <button type="submit">Confirmar y Avanzar al Paso 2</button>
+    </div>
+</form>
+
+<!-- Mensaje de error (oculto por defecto) -->
+<div id="error-message" style="display: none; color: red; margin-top: 10px;"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/filtrar_proyectos.js') }}"></script>
+<script src="{{ url_for('static', filename='js/validaciones.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Administrar Servicio{% endblock %}
+
+{% block content %}
+<h1>📦 Administrar Servicio</h1>
+
+{% if get_flashed_messages() %}
+    <div class="mensajes-flash">
+        {% for message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ message[0] }}">{{ message[1] }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<!-- Formulario para seleccionar el cliente -->
+<form method="POST" class="formulario-servicio">
+    <div class="form-group">
+        <label for="info_cliente">Selecciona un Cliente para Revisar sus Servicios:</label>
+        <select name="info_cliente" id="info_cliente" required>
+            <option value="" disabled selected>Seleccione un Cliente</option>
+            {% for cliente in clientes %}
+                <option value="{{ cliente.id }}|{{ cliente.nombre }}">{{ cliente.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <button type="submit">Ver Servicios</button>
+    </div>
+</form>
+
+{% if session.get('servicios') %}
+    <h3>Servicios del Cliente: {{ session['nombre_cliente'] }}</h3>
+    
+    <!-- Tabla de servicios del cliente -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID Servicio</th>
+                <th>Nombre Servicio</th>
+                <th>Máquinas</th>
+                <th>Nº Trabajos</th>
+                <th>Estado</th>
+                <th>Fecha Solicitud</th>
+                <th>Inicio Trabajos</th>
+                <th>Fin Trabajos</th>
+                <th>Precio</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for servicio in session['servicios'] %}
+                <tr>
+                    <td>{{ servicio.id }}</td>
+                    <td> {{ servicio.nombre_servicio | replace("Servicio individual: ", "IND: ") }} </td>
+                    <td>{{ servicio.unidad_tipo_servicio }}</td>
+                    <td>{{ servicio.n_trabajos }}</td>
+                    <td>{{ servicio.estado }}</td>
+                    <td>{{ servicio.fecha_solicitud.strftime('%d-%m-%Y') }}</td> <!-- Solo la fecha -->
+                    <td>{{ servicio.fecha_inicio_trabajos.strftime('%d-%m-%Y') if servicio.fecha_inicio_trabajos else "N/A" }}</td>
+                    <td>{{ servicio.fecha_fin_trabajos.strftime('%d-%m-%Y') if servicio.fecha_fin_trabajos else "N/A" }}</td>
+                    <td>{{ '$'+'{:,.0f}'.format(servicio.total_precio_ot).replace(',', '.') if servicio.total_precio_ot else "N/A"}}</td>
+                    <td> <a href="{{ url_for('administrar_servicio.gestion_servicio', id_servicio=servicio.id) }}">Gestionar</a> </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% endblock %}

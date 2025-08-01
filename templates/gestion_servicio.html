@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block title %}Gestionar Servicio{% endblock %}
+
+{% block content %}
+<h1>📦 Gestionar Servicio - ID: {{ servicio.id }}</h1>
+
+<!-- Manejador de alertas flash -->
+{% if get_flashed_messages() %}
+    <div class="mensajes-flash">
+        {% for message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ message[0] }}">{{ message[1] }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<p><strong>Cliente:</strong> {{ servicio.nombre_cliente }}</p>
+<p><strong>Nombre del Proyecto:</strong> {{ servicio.nombre_proyecto }}</p>
+<p><strong>Nombre del Servicio:</strong> {{ servicio.nombre_servicio }}</p>
+<p><strong>Máquinas Atendidas:</strong> {{ servicio.unidad_tipo_servicio }}</p>
+<p><strong>Precio:</strong> {{ '$'+'{:,.0f}'.format(servicio.total_precio_ot).replace(',', '.') if servicio.total_precio_ot else "N/A"}}</p>
+<p><strong>Fecha de Solicitud:</strong> {{ servicio.fecha_solicitud.strftime('%Y-%m-%d %H:%M') }}</p>
+<p><strong>Desfase de Pago en Días:</strong> {{ servicio.demora_pago_dias }}</p>
+<p><strong>Estado:</strong> {{ servicio.estado }}</p>
+
+
+<!-- Sección de consumo de insumos desechables -->
+<h3>💡 Consumo de Insumos Desechables</h3>
+{% if info_insumos_desechables %}
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Cantidad Consumida</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for nombre_insumo, cantidad in info_insumos_desechables.items() %}
+                <tr>
+                    <td>{{ nombre_insumo }}</td>
+                    <td>{{ cantidad }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No se consume ningún insumo desechable en este servicio.</p>
+{% endif %}
+
+<!-- Sección de consumo de insumos reutilizables -->
+<h3>♻️ Consumo de Insumos Reutilizables</h3>
+{% if info_insumos_reutilizables %}
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Cantidad</th>
+                <th>Porcentaje de Uso</th>
+                <th>Uso Ponderado</th>
+                <th>Inicio Uso</th>
+                <th>Fin Uso</th>
+                <th>N Máquina</th>
+                <th>Trabajo</th>
+                <th>Estacionamiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for insumo in info_insumos_reutilizables %}
+                <tr>
+                    <td>{{ insumo.nombre_insumo }}</td>
+                    <td>{{ insumo.cantidad }}</td>
+                    <td>{{ insumo.porcentaje_de_uso }}</td>
+                    <td>{{ insumo.uso_ponderado }}</td>
+                    <td>{{ insumo.fechahora_inicio_uso.strftime('%Y-%m-%d %H:%M') if insumo.fechahora_inicio_uso else 'N/A' }}</td>
+                    <td>{{ insumo.fechahora_fin_uso.strftime('%Y-%m-%d %H:%M') if insumo.fechahora_fin_uso else 'N/A' }}</td>
+                    <td>{{ insumo.n_maquina }}</td>
+                    <td>{{ insumo.nombre_trabajo }}</td>
+                    <td>{{ insumo.estacionamiento }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No se consumen insumos reutilizables en este servicio.</p>
+{% endif %}
+
+<!-- Sección de compras de insumos -->
+{% if dict_comprar_servicio|length > 0 %}
+    <h3>🛒 Compras de Insumos Necesarias</h3>
+    <p>OJO: Para poder realizar el servicio, se deben hacer las siguientes compras de insumos:</p>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Nombre Insumo</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in dict_comprar_servicio %}
+                <tr>
+                    <td>{{ item.nombre }}</td>
+                    <td>{{ item.cantidad }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No hay insumos pendientes para comprar.</p>
+{% endif %}
+
+
+<h3>Asignaciones Laborales Asociadas al Servicio:</h3>
+<form method="POST" class="form-gestionar-servicio">
+    <table id="table-gestionar-servicio">
+        <thead>
+            <tr>
+                <th>Máquina</th>
+                <th>Trabajo</th>
+                <th>Rol</th>
+                <th>Trabajador</th>
+                <th>Horas<br>Originales</th>
+                <th>Inicio Trabajo</th>
+                <th>Fin Trabajo</th>
+                <th>Horas<br>Trabajadas</th>
+                <th>% Avance</th>
+                <th>% Mensaje<br>al Cliente</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for asignacion in asignaciones %}
+                <tr>
+                    <td>{{ asignacion.n_maquina }}</td>
+                    <td class="nombre-trabajo">{{ asignacion.nombre_trabajo }}</td>
+                    <td>{{ asignacion.nombre_rol }}</td>
+                    <td>{{ asignacion.nombre_trabajador }}</td>
+                    <td class="hh_asignadas">{{ asignacion.horas_hombre_asignadas | round(2)}}</td>
+
+                    <td>
+                        <input type="datetime-local" name="inicio_asignacion_{{ asignacion.id }}" 
+                            value="{{ asignacion.fechahora_inicio_ventana.strftime('%Y-%m-%dT%H:%M') if asignacion.fechahora_inicio_ventana else '' }}">
+                    </td>
+
+                    <td>
+                        <input type="datetime-local" name="fin_asignacion_{{ asignacion.id }}" 
+                            value="{{ asignacion.fechahora_fin_ventana.strftime('%Y-%m-%dT%H:%M') if asignacion.fechahora_fin_ventana else '' }}">
+                    </td>
+                    
+                    <td>
+                        <input type="number" name="horas_trabajadas_{{ asignacion.id }}" 
+                               value="{{ asignacion.horas_trabajadas_total | round(2) }}" step="any" min="0" max="100">
+                    </td>
+
+                    <!-- Columna editable para el porcentaje de avance -->
+                    <td>
+                        <input type="number" name="porcentaje_avance_{{ asignacion.id }}" 
+                               value="{{ asignacion.porcentaje_de_avance }}" step="any" min="0" max="100">
+                    </td>
+                    <td style="min-width: 200px;">
+                        <input type="text" name="observaciones_{{ asignacion.id }}" 
+                               value="{{ asignacion.observaciones or ''}}">
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Botón para establecer todos los porcentajes a 100% en el frontend -->
+    <div class="form-group">
+        <button type="submit" id="confirmar_cambios">Guardar Cambios</button>
+        <button type="button" id="set_all_to_100" class="btn btn-primary">Establecer Todos los Avances a 100%</button>
+        <button type="button" id="set_all_horas_trabajadas" class="btn btn-primary">Establecer Todas las Horas Trabajadas a Horas Originales</button>
+    </div>
+</form>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/modificar_asignaciones_automaticamente.js') }}"></script>
+{% endblock %}

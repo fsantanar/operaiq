@@ -1,0 +1,45 @@
+# Carpetas del sistema y entornos virtuales
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+
+# Entorno virtual local
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# Archivos de configuración innecesarios
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.bak
+*.tmp
+
+# Control de versiones
+.git/
+.gitignore
+
+# Archivos personales o temporales
+*.pdf
+*.xlsx
+*.pptx
+*.zip
+
+# Cachés de paquetes
+pip-wheel-metadata/
+__pypackages__/
+build/
+dist/
+
+# Carpetas de archivos generados
+flask_session/
+static/cotizaciones/
+static/movimientos_financieros/
+
